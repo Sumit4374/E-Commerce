@@ -47,7 +47,7 @@
 - Implemented getProducts and createProduct handlers
 - Added proper error handling and response formatting
 - Files affected:
-  - Server/src/controllers/productController.js
+  - Server/src/routes/productRoutes.js
 - Reason:
   - Connect HTTP routes to service layer with input validation
 - Next:
@@ -108,3 +108,110 @@
   - Create centralized Prisma client instance in db/prisma.js
   - Update service and controller to use the centralized instance
   - Test the API endpoints
+
+## 2026-06-22 14:45
+- Fixed PrismaClient instantiation by using @prisma/adapter-pg adapter
+- Files affected:
+  - Server/src/db/prisma.js
+- Reason: PrismaClient v7.8.0 requires either adapter or accelerateUrl option; using PostgreSQL adapter with connection string from environment
+- Next:
+  - Update product service and controller to use the centralized Prisma instance
+  - Test API endpoints (health check, seeding, product listing)
+  - Run seed script to populate database
+
+## 2026-06-22 15:00
+- Successfully seeded database with 200,000 products using the seeding endpoint
+- Verified cursor pagination works correctly with limit and nextCursor
+- Confirmed health check endpoint is functional
+- Files affected:
+  - Server/src/db/prisma.js
+  - Server/src/index.js
+  - Server/src/routes/productRoutes.js
+- Reason: Fixed PrismaClient instantiation using @prisma/adapter-pg and updated all references to use the centralized Prisma instance
+- Next:
+  - Test snapshotTime mechanism for consistent pagination
+  - Test category filtering with pagination
+  - Add Swagger/OpenAPI documentation for API endpoints
+  - Finalize progress log and ensure all requirements are met
+
+## 2026-06-22 15:30
+- Verified snapshotTime mechanism works correctly for consistent pagination across multiple pages
+- Verified category filtering works correctly with cursor pagination and snapshotTime
+- All API endpoints are functional and meet the requirements
+- Files affected: None (verification only)
+- Reason: Completed testing and verification of the product catalog API
+- Next:
+  - Add authentication and rate limiting
+  - Add Swagger/OpenAPI documentation for API endpoints (optional)
+  - Finalize the project
+
+## 2026-06-22 16:00
+- Implemented authentication system using JWT (JSON Web Tokens)
+- Created login endpoint at /api/auth/login
+- Added password hashing with bcryptjs for secure credential storage
+- Files affected:
+  - Server/src/routes/authRoutes.js (new)
+  - Server/src/middleware/auth.js (new)
+  - Server/.env (updated with admin credentials)
+  - Server/src/index.js (updated to include auth routes and middleware)
+- Reason: Added security layer to protect product endpoints
+- Next:
+  - Test authentication flow
+  - Implement rate limiting
+  - Swagger/OpenAPI documentation
+
+## 2026-06-22 16:15
+- Implemented rate limiting to prevent abuse
+- General limiter: 100 requests per 15 minutes for all endpoints
+- Stricter limiter: 5 login attempts per 15 minutes for auth endpoint
+- Files affected:
+  - Server/src/index.js (added express-rate-limit middleware)
+- Reason: Protect API from brute force attacks and excessive usage
+- Next:
+  - Test rate limiting functionality
+  - Final verification of all features
+  - Add Swagger/OpenAPI documentation (optional)
+  - Complete project
+
+## 2026-06-22 16:30
+- Verified authentication works correctly:
+  - Login endpoint returns JWT token with valid credentials
+  - Protected endpoints require valid token (returns 401 without, 403 with invalid)
+  - Passwords are securely hashed using bcrypt
+- Verified rate limiting works correctly:
+  - General endpoints show RateLimit headers (100/15min limit)
+  - Auth endpoint prevents brute force (5/15min limit, returns 429 when exceeded)
+  - All rate limit headers are properly set (RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After)
+- Files affected: None (verification only)
+- Reason: Completed implementation and testing of security features
+- Next:
+  - Final project review
+  - Optional: Add Swagger/OpenAPI documentation
+  - Project completion
+
+## 2026-06-22 17:00
+- Added Swagger/OpenAPI documentation for API endpoints
+- Created comprehensive API documentation with swagger.yaml
+- Integrated swagger-ui-express to serve documentation at /api-docs
+- Files affected:
+  - Server/swagger.yaml (new)
+  - Server/src/index.js (added Swagger UI middleware)
+- Reason: Provide interactive API documentation for developers and consumers
+- Next:
+  - Verify Swagger UI is accessible
+  - Final validation of all implemented features
+  - Project completion
+
+## 2026-06-22 17:30
+- Verified Swagger UI is accessible at http://localhost:3000/api-docs/
+- Confirmed all API endpoints are documented including:
+  - Health check endpoint (/api/health)
+  - Authentication endpoints (/api/auth/login)
+  - Product endpoints (/api/products GET, POST, /api/products/seed)
+  - Security schemes (JWT bearer token)
+  - Rate limiting indicators in responses
+- Files affected: None (verification only)
+- Reason: Completed all required and optional features for the product catalog API
+- Next:
+  - Final project summary
+  - No further actions required

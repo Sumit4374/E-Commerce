@@ -13,13 +13,12 @@ router.post('/seed', async (req, res) => {
   // In a real application, you might want to protect this endpoint
   // For example, only allow in development or with a secret token
   try {
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
-    
+    const prisma = require('../db/prisma');
+
     const categories = ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports', 'Toys'];
     const batchSize = 1000;
     const total = 200000;
-    
+
     for (let i = 0; i < total; i += batchSize) {
       const batch = [];
       for (let j = 0; j < batchSize && i + j < total; j++) {
@@ -30,14 +29,13 @@ router.post('/seed', async (req, res) => {
           price: parseFloat((Math.random() * 100).toFixed(2)),
         });
       }
-      
+
       await prisma.product.createMany({
         data: batch,
         skipDuplicates: true,
       });
     }
-    
-    await prisma.$disconnect();
+
     res.status(200).json({ message: 'Seeding completed successfully' });
   } catch (error) {
     console.error('Seeding error:', error);
