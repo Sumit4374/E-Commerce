@@ -6,7 +6,7 @@ const SnapshotBanner = ({ snapshotTime }) => {
   const date = new Date(snapshotTime);
   const formatted = date.toLocaleString('en-US', {
     year: 'numeric',
-    month: '2-digit',
+    month: 'short',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
@@ -16,15 +16,37 @@ const SnapshotBanner = ({ snapshotTime }) => {
   });
 
   return (
-    <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 flex items-center">
-      <div className="flex-shrink-0">
-        <svg className="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L10 8.586z" clipRule="evenodd" />
-        </svg>
-      </div>
-      <div className="ml-3">
-        <p className="text-sm font-medium text-gray-900">Browsing Snapshot</p>
-        <p className="text-sm text-gray-500">{formatted} UTC</p>
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative overflow-hidden shadow-sm">
+      {/* Subtle indicator bar on the left side */}
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+
+      <div className="flex items-center gap-4 z-10">
+        {/* Banner Dataset Icon container */}
+        <div className="bg-secondary-fixed text-on-secondary-fixed p-2 rounded flex items-center justify-center">
+          <span className="material-symbols-outlined text-[20px]">dataset</span>
+        </div>
+
+        <div>
+          {/* Header & Status badges */}
+          <h2 className="font-headline-md text-headline-md font-medium text-on-surface flex items-center gap-2">
+            Browsing Snapshot
+            <span className="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded border border-outline-variant">
+              Read Only
+            </span>
+          </h2>
+
+          {/* Snapshot metadata */}
+          <div className="flex items-center gap-4 mt-1">
+            <p className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">schedule</span>
+              {formatted} UTC
+            </p>
+            <p className="font-label-md text-label-md text-secondary flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              Consistent
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

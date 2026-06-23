@@ -3,7 +3,7 @@ import ProductCatalog from './pages/ProductCatalog';
 
 function App() {
   return (
-    <div className="App">
+    <div className="bg-background text-on-background font-body-md min-h-screen antialiased flex flex-col">
       <ProductCatalog />
     </div>
   );

@@ -22,7 +22,11 @@ const useProducts = (category, limit = 10) => {
 
       // Ensure response.data is an array
       const data = Array.isArray(response.data) ? response.data : [];
-      setProducts(prev => [...prev, ...data]);
+      setProducts(prev => {
+        const existingIds = new Set(prev.map(p => p.id));
+        const uniqueNew = data.filter(p => !existingIds.has(p.id));
+        return [...prev, ...uniqueNew];
+      });
       setSnapshotTime(response.snapshotTime);
       setNextCursor(response.nextCursor);
       setHasMore(response.hasMore);
