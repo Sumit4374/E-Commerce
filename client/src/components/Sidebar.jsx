@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Sidebar = ({ isOpen, onClose, activeTab = 'catalog', setActiveTab }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },

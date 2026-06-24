@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CategoryFilter = ({ category, onChange, searchQuery, setSearchQuery, onReset }) => {
   const categories = [
     'All Categories',

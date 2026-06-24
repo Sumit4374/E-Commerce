@@ -11,6 +11,11 @@ export default defineConfig([
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         ...globals.browser,
         ...globals.es2021,
@@ -26,4 +31,3 @@ export default defineConfig([
     },
   },
 ]);
-

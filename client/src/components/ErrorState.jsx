@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ErrorState = ({ error, onRetry }) => {
   return (
     <div className="bg-error-container/20 border border-error/20 rounded-lg p-6 text-center max-w-lg mx-auto my-6 shadow-sm">

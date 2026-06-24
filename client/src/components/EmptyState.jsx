@@ -1,5 +1,3 @@
-import React from 'react';
-
 const EmptyState = () => {
   return (
     <div className="text-center py-12 bg-surface-container-lowest border border-outline-variant rounded-lg p-8 shadow-sm">

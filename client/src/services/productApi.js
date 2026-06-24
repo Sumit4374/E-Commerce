@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.API_BASE_URL; // Adjust if your API is on a different base URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+// Set auth token from localStorage if available
+const token = localStorage.getItem('token');
+if (token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 // Mock data generator
 const generateMockProducts = (limit, cursor = null) => {

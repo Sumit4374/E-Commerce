@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Auth() {
   const [activeTab, setActiveTab] = useState('signin');
@@ -8,6 +9,7 @@ function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Form states
   const [signinData, setSigninData] = useState({ email: '', password: '' });
@@ -24,14 +26,22 @@ function Auth() {
     setShowConfirmPassword(false);
   };
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate auth – replace with real API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Call the login function from auth context
+      await login(signinData.email, signinData.password);
+      // If successful, redirect to home
       navigate('/');
-    }, 1200);
+    } catch (err) {
+      // Handle error (e.g., show message)
+      console.error('Login failed:', err);
+      // Optionally, set an error state to show in UI
+      // For now, just log and keep loading false
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSignUp = (e) => {

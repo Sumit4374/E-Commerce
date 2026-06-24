@@ -1,9 +1,11 @@
-import React from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = ({ onMenuToggle, searchQuery, setSearchQuery, totalLoaded = 0 }) => {
+  const { user, logout } = useAuth();
+
   return (
     <header className="bg-surface-container-lowest border-b border-outline-variant fixed top-0 w-full z-30 flex items-center justify-between px-6 md:px-8 h-16 md:w-[calc(100%-16rem)]">
-      
+
       {/* Left section: Hamburger menu for mobile, page title & metadata badges */}
       <div className="flex items-center gap-4">
         {/* Menu button for mobile */}
@@ -23,7 +25,7 @@ const Navbar = ({ onMenuToggle, searchQuery, setSearchQuery, totalLoaded = 0 }) 
         <div className="hidden lg:flex items-center gap-4 ml-4">
           <div className="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md bg-surface-container px-2 py-1 rounded">
             <span className="material-symbols-outlined text-[14px]">database</span>
-            <span>Size: 200k+</span>
+            <span>Loaded: {totalLoaded}</span>
           </div>
           <div className="flex items-center gap-1.5 text-secondary font-label-md text-label-md bg-secondary-fixed/20 px-2 py-1 rounded">
             <span className="material-symbols-outlined text-[14px]">history</span>
@@ -72,16 +74,35 @@ const Navbar = ({ onMenuToggle, searchQuery, setSearchQuery, totalLoaded = 0 }) 
 
         {/* Divider and user details */}
         <div className="h-6 w-px bg-outline-variant mx-1"></div>
-        
-        <button className="text-secondary font-label-md text-label-md hover:bg-surface-container-low px-2 py-1 rounded transition-colors hidden sm:block cursor-pointer">
-          Docs
-        </button>
 
-        <img
-          alt="User Profile"
-          className="w-8 h-8 rounded-full border border-outline-variant object-cover ml-1"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMLCMotPPu0gCBEfriVX5e9EmJtRp1mvEQjcrxfSOsIAFdUjnsyxlWshOGIJ4SO2Mv3jaT9xM41kgbW69IOsyaDN7ranA4NsJQJX7bK-r0mGZT9WGxwiS189pAVGfszvdhWshJxY7ftxESVX7ZAkGvF4KBYAsJUZDN0VggwjGTq60AE8TLX8gz6v6Q7JwFDoM2sOj0YH7TVByBIttoq97ouerVwsdsME2RzkGpR2qdSaEjgsMXG96-RTcOCBN-jkD1BB85xCyRJIkF"
-        />
+        <div className="flex items-center gap-2">
+          {/* User info */}
+          {user ? (
+            <>
+              <div className="h-8 w-8 rounded-full bg-secondary-fixed/20 flex items-center justify-center text-sm font-medium text-secondary">
+                {user.name ? user.name.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+              </div>
+              <div className="hidden ml-2 text-sm font-medium text-on-surface">
+                {user.name || user.email}
+              </div>
+            </>
+          ) : (
+            // Fallback if user is not loaded yet
+            <img
+              alt="User Profile"
+              className="w-8 h-8 rounded-full border border-outline-variant object-cover ml-1"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMLCMotPPu0gCBEfriVX5e9EmJtRp1mvEQjcrxfSOsIAFdUjnsyxlWshOGIJ4SO2Mv3jaT9xM41kgbW69IOsyaDN7ranA4NsJQJX7bK-r0mGZT9WGxwiS189pAVGfszvdhWshJxY7ftxESVX7ZAkGvF4KBYAsJUZDN0VggwjGTq60AE8TLX8gz6v6Q7JwFDoM2sOj0YH7TVByBIttoq97ouerVwsdsME2RzkGpR2qdSaEjgsMXG96-RTcOCBN-jkD1BB85xCyRJIkF"
+            />
+          )}
+          {/* Logout button */}
+          <button
+            onClick={logout}
+            aria-label="logout"
+            className="text-secondary font-label-md text-label-md hover:bg-surface-container-low px-2 py-1 rounded transition-colors hidden sm:block cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </header>
   );

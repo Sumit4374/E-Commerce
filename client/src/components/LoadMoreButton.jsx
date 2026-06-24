@@ -1,5 +1,3 @@
-import React from 'react';
-
 const LoadMoreButton = ({ onClick, loading, hasMore, loadedCount = 0 }) => {
   if (!hasMore) {
     return (
@@ -36,11 +34,11 @@ const LoadMoreButton = ({ onClick, loading, hasMore, loadedCount = 0 }) => {
         </div>
         <div className="font-label-sm text-label-sm flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-          Loaded: <span class="font-medium text-on-surface">{loadedCount}</span>
+          Loaded: <span className="font-medium text-on-surface">{loadedCount}</span>
         </div>
         <div className="font-label-sm text-label-sm flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-outline"></span>
-          Available: <span class="font-medium text-on-surface">204,512</span>
+          Available: <span className="font-medium text-on-surface">204,512</span>
         </div>
       </div>
     </div>

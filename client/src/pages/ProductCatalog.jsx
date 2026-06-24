@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import CategoryFilter from '../components/CategoryFilter';
@@ -10,10 +10,10 @@ import ErrorState from '../components/ErrorState';
 import useProducts from '../hooks/useProducts.js';
 
 const ProductCatalog = () => {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState('catalog');
-  const [category, setCategory] = React.useState('All Categories');
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('catalog');
+  const [category, setCategory] = useState('All Categories');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const {
     products,

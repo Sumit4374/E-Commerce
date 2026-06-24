@@ -1,18 +1,17 @@
-import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
 const ProductCard = ({ product }) => {
   const { id, name, category, price, updatedAt } = product;
 
-  // Format relative timestamp using date-fns
-  let relativeTime = '';
-  try {
-    relativeTime = formatDistanceToNow(new Date(updatedAt), { addSuffix: true })
-      .replace('about ', '')
-      .replace('less than a minute ago', 'just now');
-  } catch (err) {
-    relativeTime = 'recently';
-  }
+  const relativeTime = (() => {
+    try {
+      return formatDistanceToNow(new Date(updatedAt), { addSuffix: true })
+        .replace('about ', '')
+        .replace('less than a minute ago', 'just now');
+    } catch {
+      return 'recently';
+    }
+  })();
 
   // Format price
   const displayPrice = price ? `$${parseFloat(price).toFixed(2)}` : '$0.00';
