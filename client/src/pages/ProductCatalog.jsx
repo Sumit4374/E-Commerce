@@ -23,7 +23,7 @@ const ProductCatalog = () => {
     hasMore,
     loadMore,
     reset
-  } = useProducts(category);
+  } = useProducts(category, 20);
 
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
@@ -67,7 +67,7 @@ const ProductCatalog = () => {
 
         {/* Main page content area */}
         <main className="flex-1 mt-16 p-6 md:p-8 w-full max-w-[1440px] mx-auto overflow-y-auto overflow-x-hidden flex flex-col gap-6">
-          
+
           {/* Snapshot Banner */}
           <SnapshotBanner snapshotTime={snapshotTime} />
 
@@ -92,7 +92,7 @@ const ProductCatalog = () => {
             </div>
 
             {/* Stat Card 3: Snapshot Timestamp */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col justify-between hover:border-secondary transition-colors group">
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex justify-between hover:border-secondary transition-colors group">
               <div className="flex items-start justify-between mb-4">
                 <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Snapshot</span>
                 <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors text-[20px]">history</span>
@@ -101,7 +101,7 @@ const ProductCatalog = () => {
             </div>
 
             {/* Stat Card 4: Loaded Items */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col justify-between hover:border-secondary transition-colors group">
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex justify-between hover:border-secondary transition-colors group">
               <div className="flex items-start justify-between mb-4">
                 <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Loaded</span>
                 <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors text-[20px]">downloading</span>
@@ -125,12 +125,12 @@ const ProductCatalog = () => {
 
           {/* Content States (Error / Empty / Grid) */}
           {error && (
-            <ErrorState 
-              error={error} 
+            <ErrorState
+              error={error}
               onRetry={() => {
                 reset();
                 loadMore();
-              }} 
+              }}
             />
           )}
 
@@ -139,17 +139,17 @@ const ProductCatalog = () => {
           )}
 
           {!error && (
-            <ProductGrid 
-              products={filteredProducts} 
-              loading={loading && products.length === 0} 
+            <ProductGrid
+              products={filteredProducts}
+              loading={loading && products.length === 0}
             />
           )}
 
           {/* Load More Controller */}
-          <LoadMoreButton 
-            onClick={loadMore} 
-            loading={loading} 
-            hasMore={hasMore} 
+          <LoadMoreButton
+            onClick={loadMore}
+            loading={loading}
+            hasMore={hasMore}
             loadedCount={products.length}
           />
 
