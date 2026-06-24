@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const { PRODUCT_CATEGORIES } = require('../constants/categories');
 
 // GET /api/products
 router.get('/', productController.getProducts);
@@ -15,7 +16,6 @@ router.post('/seed', async (req, res) => {
   try {
     const prisma = require('../db/prisma');
 
-    const categories = ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports', 'Toys'];
     const batchSize = 1000;
     const total = 200000;
 
@@ -25,7 +25,7 @@ router.post('/seed', async (req, res) => {
         const productId = i + j + 1;
         batch.push({
           name: `Product ${productId}`,
-          category: categories[productId % categories.length],
+          category: PRODUCT_CATEGORIES[productId % PRODUCT_CATEGORIES.length],
           price: parseFloat((Math.random() * 100).toFixed(2)),
         });
       }

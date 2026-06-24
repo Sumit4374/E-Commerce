@@ -1,15 +1,12 @@
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('./src/db/prisma');
+const { PRODUCT_CATEGORIES } = require('./src/constants/categories');
 
 async function main() {
   console.log('Starting seed...');
   
   // Clear existing products (optional)
   // await prisma.product.deleteMany({});
-  
-  const categories = ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports', 'Toys'];
   
   // Generate 200,000 products in batches
   const batchSize = 1000;
@@ -21,7 +18,7 @@ async function main() {
       const productId = i + j + 1;
       batch.push({
         name: `Product ${productId}`,
-        category: categories[productId % categories.length],
+        category: PRODUCT_CATEGORIES[productId % PRODUCT_CATEGORIES.length],
         price: parseFloat((Math.random() * 100).toFixed(2)),
       });
     }

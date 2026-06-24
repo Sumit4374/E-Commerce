@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { requiredEnv, requiredJwtSecret } = require('../config/env');
 
-const { ADMIN_EMAIL, ADMIN_PASSWORD_HASH } = process.env;
-
-// JWT secret (in production, use a strong secret from environment)
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_change_in_production';
+const ADMIN_EMAIL = requiredEnv('ADMIN_EMAIL');
+const ADMIN_PASSWORD_HASH = requiredEnv('ADMIN_PASSWORD_HASH');
+const JWT_SECRET = requiredJwtSecret();
 const JWT_EXPIRES_IN = '1h';
 
 /**

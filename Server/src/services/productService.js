@@ -1,4 +1,11 @@
-const prisma = require('../db/prisma');
+let prisma;
+
+function getPrisma() {
+  if (!prisma) {
+    prisma = require('../db/prisma');
+  }
+  return prisma;
+}
 
 /**
  * Fetch products with cursor pagination and snapshotTime
@@ -9,7 +16,7 @@ const prisma = require('../db/prisma');
  * @param {string} params.category - Optional category filter
  * @returns {Object} { data, nextCursor, snapshotTime, hasMore }
  */
-async function getProducts({ limit, cursor, snapshotTime, category }) {
+async function getProducts({ limit, cursor, snapshotTime, category }, client = getPrisma()) {
   // If snapshotTime is not provided, generate one (now)
   let snapTime = snapshotTime;
   if (!snapTime) {
@@ -41,7 +48,7 @@ async function getProducts({ limit, cursor, snapshotTime, category }) {
   }
 
   // Fetch limit + 1 items to determine if there is a next page
-  const products = await prisma.product.findMany({
+  const products = await client.product.findMany({
     where,
     orderBy: [
       { updatedAt: 'desc' },
@@ -76,8 +83,8 @@ async function getProducts({ limit, cursor, snapshotTime, category }) {
  * @param {Object} productData
  * @returns {Object} Created product
  */
-async function createProduct(productData) {
-  return await prisma.product.create({
+async function createProduct(productData, client = getPrisma()) {
+  return await client.product.create({
     data: productData,
   });
 }
