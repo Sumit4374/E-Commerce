@@ -6,6 +6,10 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust the first proxy (Render's reverse proxy) so express-rate-limit
+// can correctly identify users via the X-Forwarded-For header
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
