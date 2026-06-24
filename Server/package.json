@@ -9,7 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "seed": "node seed.js",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate && sed -i 's|#main-entry-point|./index|g' node_modules/@prisma/client/.prisma/client/default.js"
   },
   "keywords": [],
   "author": "",
