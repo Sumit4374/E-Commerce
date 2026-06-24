@@ -58,10 +58,10 @@ export const fetchProducts = async ({ limit, cursor, snapshotTime, category }) =
 
   // Otherwise, call the real API
   const params = new URLSearchParams();
-  if (params) params.append('limit', limit);
+  // Ensure limit is always included as it's a required parameter
+  params.append('limit', limit);
   if (cursor) {
-    params.append('cursor[updatedAt]', cursor.updatedAt);
-    params.append('cursor[id]', cursor.id);
+    params.append('cursor', JSON.stringify(cursor));
   }
   if (snapshotTime) params.append('snapshotTime', snapshotTime);
   if (category) params.append('category', category);
