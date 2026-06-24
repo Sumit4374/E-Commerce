@@ -2,6 +2,12 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+// Set auth token from localStorage if available
+const token = localStorage.getItem('token');
+if (token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
 /**
  * Decodes a JWT token and returns the payload.
  * @param {string} token
@@ -10,16 +16,19 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const decodeToken = (token) => {
   try {
     const base64Url = token.split('.')[1];
+    if (!base64Url) return null;
+
+    // Convert base64url to standard base64
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0)).toString(16))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
+
+    // Decode base64 to get the JSON string
+    const jsonString = atob(base64);
+
+    // Parse the JSON string
+    return JSON.parse(jsonString);
   } catch (e) {
-    return e;
+    // Return null on any error instead of the error object
+    return null;
   }
 };
 

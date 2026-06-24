@@ -7,6 +7,7 @@ function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(''); // Add error state
   const formRef = useRef(null);
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -24,21 +25,25 @@ function Auth() {
     setActiveTab(tab);
     setShowPassword(false);
     setShowConfirmPassword(false);
+    setError(''); // Clear error when switching tabs
   };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(''); // Clear previous error
     try {
       // Call the login function from auth context
       await login(signinData.email, signinData.password);
       // If successful, redirect to home
       navigate('/');
     } catch (err) {
-      // Handle error (e.g., show message)
+      // Handle error and show user-friendly message
       console.error('Login failed:', err);
-      // Optionally, set an error state to show in UI
-      // For now, just log and keep loading false
+      const message = err.response?.data?.error ||
+                     err.response?.data?.message ||
+                     'Login failed. Please check your credentials and try again.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -47,13 +52,17 @@ function Auth() {
   const handleSignUp = (e) => {
     e.preventDefault();
     if (signupData.password !== signupData.confirm) {
+      setError('Passwords do not match.');
       return;
     }
+
+    // Since there's no backend registration endpoint, show informative message
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setActiveTab('signin');
-    }, 1200);
+      setError('User registration is not available. Please use the admin account to sign in.');
+      setActiveTab('signin'); // Switch to sign-in tab
+    }, 1500);
   };
 
   return (
@@ -179,6 +188,13 @@ function Auth() {
             </button>
           </div>
 
+          {/* ── Error Message ── */}
+          {error && (
+            <p className="text-error font-label-sm text-label-sm mb-stack-sm">
+              {error}
+            </p>
+          )}
+
           {/* ── Forms Container ── */}
           <div className="relative min-h-[380px]" ref={formRef}>
             {/* Sign In Form */}
@@ -200,7 +216,7 @@ function Auth() {
                 </label>
                 <input
                   id="signin-email"
-                  type="email"
+                  type="text"
                   placeholder="name@company.com"
                   value={signinData.email}
                   onChange={(e) =>
@@ -325,7 +341,7 @@ function Auth() {
                     htmlFor="signup-password"
                     className="font-label-md text-label-md text-on-surface-variant"
                   >
-                    PASSWORD
+                  PASSWORD
                   </label>
                   <div className="relative">
                     <input
@@ -354,7 +370,7 @@ function Auth() {
                     htmlFor="signup-confirm"
                     className="font-label-md text-label-md text-on-surface-variant"
                   >
-                    CONFIRM
+                  CONFIRM
                   </label>
                   <div className="relative">
                     <input
@@ -432,7 +448,7 @@ function Auth() {
 
             <button
               type="button"
-              className="flex items-center justify-center gap-stack-sm h-11 border border-outline-variant rounded-lg bg-surface-container-lowest hover:bg-surface-container transition-colors group cursor-pointer"
+              className="flex items-center justify-center gap-sm h-11 border border-outline-variant rounded-lg bg-surface-container-lowest hover:bg-surface-container transition-colors group cursor-pointer"
             >
               {/* Google SVG Icon */}
               <svg className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24">
