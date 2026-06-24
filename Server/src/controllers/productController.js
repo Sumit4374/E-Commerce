@@ -40,7 +40,11 @@ async function getProducts(req, res) {
       });
     }
     console.error('Error fetching products:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Internal server error', 
+      message: error.message, 
+      stack: error.stack 
+    });
   }
 }
 
